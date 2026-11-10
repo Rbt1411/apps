@@ -1578,7 +1578,7 @@ class HudApp {
             c.uniform(ref, 'u_sweep', [(w.sweep === undefined ? 270 : w.sweep) * Math.PI / 180]);
             c.uniform(ref, 'u_ticks', [D.ticks]);
             c.uniform(ref, 'u_minor', [w.minor || 4]);
-            c.uniform(ref, 'u_redFrom', [w.measure === 'rpm' ? this._redMarks(D.max)[0] : (isNum(w.redFrom) ? w.redFrom : 2)]);
+            c.uniform(ref, 'u_redFrom', [w.measure === 'rpm' ? this._redMarks(D.max, w.rpmRedline)[0] : (isNum(w.redFrom) ? w.redFrom : 2)]);
             c.uniform(ref, 'u_ringW', [w.ringW || 14]);
             c.uniform(ref, 'u_ring', rgb(color(t, w.ring || 'line')));
             c.uniform(ref, 'u_ring2', rgb(color(t, w.ring2 || 'dim')));
