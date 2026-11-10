@@ -1128,11 +1128,11 @@ class HudApp {
         return Object.prototype.hasOwnProperty.call(d, name) ? d[name] : null;
     }
 
-    /** Where the red and orange marks start on a rev scale that ends at `max` rpm, as fractions 0..1: red from the
-     *  redline, but always covering at least the last 500 rpm (the M40i's scale ends right at its 7000 redline),
-     *  orange over the 700 rpm before the red. */
-    _redMarks(max) {
-        const redFrom = Math.min(this.setting('redline'), max - 500) / max;
+    /** Where the red and orange marks start on a rev scale that ends at `max` rpm, as fractions 0..1.
+     *  An individual widget may override the vehicle-wide redline for its visual scale. */
+    _redMarks(max, redline) {
+        const visualRedline = isNum(redline) ? redline : this.setting('redline');
+        const redFrom = Math.min(visualRedline, max - 500) / max;
         return [redFrom, redFrom - 700 / max];
     }
 
@@ -1505,7 +1505,7 @@ class HudApp {
             c.uniform(ref, 'u_inner', [w.inner || w.band + 18]);
             c.uniform(ref, 'u_scale', w.scale || [w.geo[2], w.geo[0]]);
             c.uniform(ref, 'u_ticks', w.ticks);
-            const [redFrom, orange] = this._redMarks(w.rpmMax || 8000);
+            const [redFrom, orange] = this._redMarks(w.rpmMax || 8000, w.rpmRedline);
             c.uniform(ref, 'u_redFrom', [redFrom]);
             c.uniform(ref, 'u_orange', [orange]);
             c.uniform(ref, 'u_fuelSeg', w.fuelSeg);
